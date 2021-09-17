@@ -89,11 +89,8 @@ module.exports = {
       );
       await playingMessage.react("⏭");
       await playingMessage.react("⏯");
-      await playingMessage.react("🔇");
-      await playingMessage.react("🔉");
-      await playingMessage.react("🔊");
-      await playingMessage.react("🔁");
-      await playingMessage.react("⏹");
+      await playingMessage.react("∞");
+      await playingMessage.react("▶");
     } catch (error) {
       console.error(error);
     }
@@ -131,42 +128,7 @@ module.exports = {
           }
           break;
 
-        case "🔇":
-          reaction.users.remove(user).catch(console.error);
-          if (!canModifyQueue(member)) return i18n.__("common.errorNotChannel");
-          queue.muted = !queue.muted;
-          if (queue.muted) {
-            queue.connection.dispatcher.setVolumeLogarithmic(0);
-            queue.textChannel.send(i18n.__mf("play.mutedSong", { author: user })).catch(console.error);
-          } else {
-            queue.connection.dispatcher.setVolumeLogarithmic(queue.volume / 100);
-            queue.textChannel.send(i18n.__mf("play.unmutedSong", { author: user })).catch(console.error);
-          }
-          break;
-
-        case "🔉":
-          reaction.users.remove(user).catch(console.error);
-          if (queue.volume == 0) return;
-          if (!canModifyQueue(member)) return i18n.__("common.errorNotChannel");
-          queue.volume = Math.max(queue.volume - 10, 0);
-          queue.connection.dispatcher.setVolumeLogarithmic(queue.volume / 100);
-          queue.textChannel
-            .send(i18n.__mf("play.decreasedVolume", { author: user, volume: queue.volume }))
-            .catch(console.error);
-          break;
-
-        case "🔊":
-          reaction.users.remove(user).catch(console.error);
-          if (queue.volume == 100) return;
-          if (!canModifyQueue(member)) return i18n.__("common.errorNotChannel");
-          queue.volume = Math.min(queue.volume + 10, 100);
-          queue.connection.dispatcher.setVolumeLogarithmic(queue.volume / 100);
-          queue.textChannel
-            .send(i18n.__mf("play.increasedVolume", { author: user, volume: queue.volume }))
-            .catch(console.error);
-          break;
-
-        case "🔁":
+        case "∞":
           reaction.users.remove(user).catch(console.error);
           if (!canModifyQueue(member)) return i18n.__("common.errorNotChannel");
           queue.loop = !queue.loop;
@@ -180,7 +142,7 @@ module.exports = {
             .catch(console.error);
           break;
 
-        case "⏹":
+        case "▶":
           reaction.users.remove(user).catch(console.error);
           if (!canModifyQueue(member)) return i18n.__("common.errorNotChannel");
           queue.songs = [];
